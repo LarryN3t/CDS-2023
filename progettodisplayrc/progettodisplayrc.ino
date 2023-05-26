@@ -126,6 +126,15 @@ void doUI(void)
 #endif // USE_UI_CONTROL
 
 
+// Sprite Definition
+const uint8_t F_ROCKET = 2;
+const uint8_t W_ROCKET = 11;
+const uint8_t PROGMEM rocket[F_ROCKET * W_ROCKET] =  // rocket
+{
+  0x18, 0x24, 0x42, 0x81, 0x99, 0x18, 0x99, 0x18, 0xa5, 0x5a, 0x81,
+  0x18, 0x24, 0x42, 0x81, 0x18, 0x99, 0x18, 0x99, 0x24, 0x42, 0x99,
+};
+
 
 void setup()
 {
@@ -150,7 +159,9 @@ void setup()
 
 void loop()
 {
-
+  static boolean tasto = true;
+  if (!tasto)
+  {
     if (contatore == 1000000)
       {
         sensors.requestTemperatures(); 
@@ -163,7 +174,25 @@ void loop()
 
   
 
+/*
+  mx.control(MD_MAX72XX::UPDATE, MD_MAX72XX::OFF);
 
+  // Initialize
+  if (bInit)
+  {
+    mx.clear();
+    bInit = false;
+
+
+  for (uint8_t i=0; i<MAX_DEVICES; i++)
+    {
+      for (uint8_t j=0; j<8; j++)
+        for (uint8_t k=0; k<8; k++)
+            mx.setPoint(j,(i*COL_SIZE) + k, true);
+    }
+  }
+*/     
+  
       #if USE_UI_CONTROL
         doUI();
       #endif // USE_UI_CONTROL
@@ -173,7 +202,13 @@ void loop()
             sprintf(curMessage, "Base Bracciano - CDS 2023 - Temp %.2f C", temperatureC);
             P.displayText(curMessage, scrollAlign, scrollSpeed, scrollPause, scrollEffect, scrollEffect);
         }
+  } else {
  
-  
+         if (P.displayAnimate())
+         {
+                P.displayText("Tasto", PA_CENTER, P.getSpeed(), 10, PA_SPRITE, PA_SPRITE);
+                P.setSpriteData(rocket, W_ROCKET, F_ROCKET, rocket, W_ROCKET, F_ROCKET);
+         }    
+  }
   }
   
