@@ -135,7 +135,8 @@ const uint8_t PROGMEM rocket[F_ROCKET * W_ROCKET] =  // rocket
   0x18, 0x24, 0x42, 0x81, 0x18, 0x99, 0x18, 0x99, 0x24, 0x42, 0x99,
 };
 
-
+const int buttonPin = 2; 
+int buttonState = 0;  
 void setup()
 {
   Serial.begin(57600);
@@ -148,7 +149,7 @@ void setup()
 
   doUI();
 #endif // USE_UI_CONTROL
-
+  pinMode(buttonPin, INPUT);
   P.begin();
   sensors.begin();
   sensors.requestTemperatures(); 
@@ -160,7 +161,8 @@ void setup()
 void loop()
 {
   static boolean tasto = true;
-  if (!tasto)
+    buttonState = digitalRead(buttonPin);
+  if (buttonState == HIGH)
   {
     if (contatore == 1000000)
       {
